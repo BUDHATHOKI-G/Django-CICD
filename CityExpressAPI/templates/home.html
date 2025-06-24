@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #f5f5f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border-bottom: 2px solid #003865;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            gap: 20px;
+        }
+
+        header img {
+            height: 60px;
+           
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #c8102e;
+            margin: 0;
+            white-space: nowrap;
+            
+            
+        }
+
+        nav {
+            background: #003865;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.60rem 2rem;
+        }
+
+        .nav-links a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ffc107;
+            text-decoration: underline;
+        }
+
+        .logout-form button {
+            background: #c8102e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-form button:hover {
+            background: #a00d25;
+        }
+
+        main {
+            background: url("{% static 'img/remit.webp' %}") center/cover no-repeat;
+            padding: 3rem 2rem 6rem;
+            text-align: center;
+            min-height: 45vh;
+            flex: 1;
+        }
+
+        main h2 {
+            font-size: 1.6rem;
+            color: #003865;
+            margin-bottom: 1rem;
+            
+        }
+
+        main p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: auto;
+            color: #96131a;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+        }
+
+        footer {
+            background: #eee;
+            text-align: center;
+            padding: 1rem 2rem;
+            font-size: 0.9rem;
+            color: #555;
+            border-top: 1px solid #ccc;
+        }
+
+        footer span {
+            color: #c8102e;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="{% static 'img/remit.jpg' %}" alt="City Express Logo">
+    <!-- <h1 class="header-title">SEND MONEY TO CITY EXPRESS MONEY TRANSFER</h1> -->
+</header>
+
+<nav>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="http://192.168.7.137:8000/send/">Send Money</a>
+        <a href="http://127.0.0.1:8000/StatusUpdate/">Check Status</a>
+        <a href="http://127.0.0.1:8000/transaction-report/">Report</a>
+    </div>
+
+    <form method="post" action="{% url 'logout' %}" class="logout-form">
+        {% csrf_token %}
+        <button type="submit">Log Out</button>
+    </form>
+</nav>
+
+<main>
+    <!-- <h2>Welcome to the City Express Money Transfer Portal</h2>
+    <p>Use the navigation above to send money, check transaction status, or view your transfer reports quickly and securely.</p> -->
+</main>
+
+<footer>
+    &copy; {{ year|default:2025 }} <span>City Express Money Transfer</span>. All rights reserved.
+</footer>
+
+</body>
+</html>

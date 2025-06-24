@@ -1,0 +1,221 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Send Transaction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  </head>
+  <body class="bg-light">
+    <div class="container py-5">
+      <h2 class="mb-4 text-center">Send Transaction Form</h2>
+      <form method="post" class="bg-white p-4 rounded shadow-sm">
+        {% csrf_token %}
+        <h5 class="mb-3">Sender Information</h5>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">First Name</label>
+            <input type="text" name="SENDER_FIRST_NAME" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Middle Name</label>
+            <input type="text" name="SENDER_MIDDLE_NAME" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="SENDER_LAST_NAME" class="form-control">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Gender</label>
+            <select name="SENDER_GENDER" class="form-select">
+              <option value="MALE" selected>Male</option>
+              <option value="FEMALE">Female</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Nationality</label>
+            <input type="text" name="SENDER_NATIONALITY" class="form-control" value="NEPALI">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Occupation</label>
+            <input type="text" name="SENDER_OCCUPATION" class="form-control">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Address</label>
+            <input type="text" name="SENDER_ADDRESS" class="form-control" value="RIYAD">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">City</label>
+            <input type="text" name="SENDER_CITY" class="form-control" value="RIYAD">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Country</label>
+            <input type="text" name="SENDER_COUNTRY" class="form-control" value="UAE">
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <label class="form-label">ID Type</label>
+            <input type="text" name="SENDER_ID_TYPE" class="form-control" value="PASSPORT">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">ID Number</label>
+            <input type="text" name="SENDER_ID_NUMBER" class="form-control" value="ID97K">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Source of Fund</label>
+            <input type="text" name="SOURCE_OF_FUND" class="form-control" value="SALARY">
+          </div>
+        </div>
+
+        <h5 class="mb-3">Receiver Information</h5>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">First Name</label>
+            <input type="text" name="RECEIVER_FIRST_NAME" class="form-control" value="SANDESH">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="RECEIVER_LAST_NAME" class="form-control" value="THAPA">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Country</label>
+            <input type="text" name="RECEIVER_COUNTRY" class="form-control" value="NPL">
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <label class="form-label">Address</label>
+            <input type="text" name="RECEIVER_ADDRESS" class="form-control" value="kathmandu">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Contact Number</label>
+            <input type="text" name="RECEIVER_CONTACT_NUMBER" class="form-control" value="9841307287">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Relationship</label>
+            <input type="text" name="RELATIONSHIP_TO_BENEFICIARY" class="form-control" value="BROTHER">
+          </div>
+        </div>
+
+        <h5 class="mb-3">Transaction Details</h5>
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <label class="form-label">Payment Mode</label>
+            <select name="PAYMENT_MODE" class="form-select" id="paymentMode">
+              <option value="B">BANK</option>
+              <option value="C" selected>CASH</option>
+              <option value="W">WALLET</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Transfer Amount</label>
+            <input type="text" name="TRANSFER_AMOUNT" class="form-control" value="1001">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Authorized Required</label>
+            <select name="AUTHORIZED_REQUIRED" class="form-select">
+              <option value="Y">Y</option>
+              <option value="N" selected>N</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label">Bank/Wallet Name</label>
+            <select id="location-search" name="BANK_NAME" class="form-select" style="width: 100%;">
+              <option value="">Search...</option>
+            </select>
+          </div>
+          <!-- Hidden input for LOCATION_ID -->
+          <input type="hidden" id="location-code" name="LOCATION_ID">
+          <div class="col-md-6">
+            <label class="form-label">Bank Account Number</label>
+            <input type="text" name="BANK_ACCOUNT_NUMBER" id="bankAccount" class="form-control">
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary px-5">Send Transaction</button>
+        </div>
+      </form>
+    </div>
+
+		<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const paymentMode = document.getElementById("paymentMode");
+    const locationCodeInput = document.getElementById("location-code");
+    const bankAccount = document.getElementById("bankAccount");
+
+    function updateFieldRequirements() {
+        const mode = paymentMode.value;
+
+        const requireFields = (mode === "B" || mode === "W");
+
+        // Only bank/wallet require these fields
+        locationCodeInput.required = requireFields;
+        bankAccount.required = requireFields;
+    }
+
+    if (paymentMode) {
+        paymentMode.addEventListener("change", function () {
+            updateFieldRequirements();
+        });
+        updateFieldRequirements();  // Initial check
+    }
+});
+
+$(document).ready(function () {
+    function getPaymentMode() {
+        return $('select[name="PAYMENT_MODE"]').val();
+    }
+
+    $('#location-search').select2({
+        placeholder: 'Search Bank or Wallet',
+        minimumInputLength: 2,
+        ajax: {
+            url: '/search-locations/',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                    type: getPaymentMode()
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(function (item) {
+                        return {
+                            id: item.location_name,
+                            text: item.location_name,
+                            code: item.location_code
+                        };
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#location-search').on('select2:select', function (e) {
+        $('#location-code').val(e.params.data.code); // LOCATION_ID
+    });
+
+    $('#location-search').on('select2:clear', function () {
+        $('#location-code').val('');
+    });
+});
+
+</script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Transaction Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        form {
+            margin-bottom: 2rem;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            margin-right: 1rem;
+            width: 300px;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 999;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 2rem;
+            border: 1px solid #888;
+            width: 60%;
+            border-radius: 10px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .field {
+            margin: 0.5rem 0;
+        }
+
+        .field span {
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+<h1>Check Transaction Status</h1>
+
+<form method="get">
+    <label for="agent_txnid">Agent TXN ID:</label>
+    <input type="text" id="agent_txnid" name="agent_txnid" required value="{{ request.GET.agent_txnid }}">
+    <button type="submit">Check Status</button>
+</form>
+
+{% if error %}
+    <div style="color: red;"><strong>Error:</strong> {{ error }}</div>
+{% endif %}
+
+{% if request.GET.agent_txnid and response %}
+<!-- Modal Popup (same as before) -->
+<div id="statusModal" class="modal" style="display: block;">
+    <div class="modal-content">
+        <span class="close" onclick="window.location.href='http://127.0.0.1:8000/StatusUpdate'">&times;</span>
+        <h2>Status Result</h2>
+        <div class="field"><span>Status:</span> {{ response.STATUS }}</div>
+        <div class="field"><span>Message:</span> {{ response.MESSAGE }}</div>
+        <div class="field"><span>Sender:</span> {{ response.SENDER_NAME }}</div>
+        <div class="field"><span>Receiver:</span> {{ response.RECEIVER_NAME }}</div>
+        <div class="field"><span>Amount:</span> {{ response.COLLECT_AMT }} {{ response.COLLECT_CURRENCY }}</div>
+        <div class="field"><span>Exchange Rate:</span> {{ response.EXCHANGE_RATE }}</div>
+        <div class="field"><span>Payout:</span> {{ response.PAYOUTAMT }} {{ response.PAYOUTCURRENCY }}</div>
+        <div class="field"><span>Status Date:</span> {{ response.STATUS_DATE }}</div>
+    </div>
+</div>
+
+{% endif %}
+
+<h2>Recent Transactions (Bank/Wallet)</h2>
+<table border="1" cellspacing="0" cellpadding="8">
+    <thead>
+        <tr>
+            <th>S.NO</th>
+            <th>Agent Transaction ID</th>
+            <th>PIN Number</th>
+            <th>Receiver Name</th>
+            <th>Bank/Wallet Name</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for txn in recent_transactions %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ txn.agent_txnid }}</td>
+            <td>{{ txn.pinno }}</td>
+            <td>{{ txn.receiver_first_name }} {{ txn.receiver_last_name }}</td>
+            <td>{{ txn.bank_name|default_if_none:"N/A" }}</td>
+            <td>{{ txn.status }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No recent transactions found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    function showModalIfValid() {
+        const agent_txnid = document.getElementById('agent_txnid').value.trim();
+        return agent_txnid.length > 0;
+    }
+
+    // Close modal if clicked outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('statusModal');
+        if (event.target == modal) {
+            window.location.href = "http://127.0.0.1:8000/StatusUpdate";
+        }
+    };
+</script>
+
+</body>
+</html>
