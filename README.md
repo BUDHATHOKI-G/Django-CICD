@@ -1,1 +1,0 @@
-This is my CICD learning project.
